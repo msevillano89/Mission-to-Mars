@@ -13,13 +13,17 @@ def scrape_all():
 
     news_title, news_paragraph = mars_news(browser)
 
+    #
+
     # Run all scraping functions and store results in a dictionary
+    # For the challenge, we create a new dictionary to hold each hemisphere image URL and title
     data = {
         "news_title": news_title,
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "hemisphere_data": hemisphere_scrape(browser)
     }
 
     # Stop webdriver and return data
@@ -97,6 +101,39 @@ def mars_facts():
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
 
+def hemisphere_scrape(browser) :
+# 1. Visit the URL
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+
+# 2. Create a list to hold the images and titles.
+    hemisphere_image_urls = []
+
+# 3. Write code to retrieve the image urls and titles for each hemisphere.
+#Iterate through each of the four hemisphere links:
+    for i in range(4):
+        hemispehere = {}
+        #Navigate to each image thumbnail and click
+        thumb_image_elem = browser.find_by_css("h3")[i]
+        thumb_image_elem.click()
+        # Parse the new page
+        html= browser.html
+        img_soup = soup(html, 'html.parser')
+        # Retrieve the full size image
+        img_url_rel = img_soup.find('img', class_="wide-image").get('src')
+        img_url = f'https://marshemispheres.com/{hemi_img_url_rel}'
+        #Retrieve title
+        title = img_soup.find("h2", class_="title").get_text()
+        # Define and append to the dictionary
+        hemisphere = {'title': title, 'img_url': img_url,}
+        hemisphere_image_urls.append(hemisphere)
+        #Go back to main page
+        browser.back()
+
+    # 4. Print the list that holds the dictionary of each image url and title.
+    # hemisphere_image_urls
+    return hemisphere_image_urls
+#--------------- CODE ENDS-------------------------
 if __name__ == "__main__":
 
     # If running as script, print scraped data

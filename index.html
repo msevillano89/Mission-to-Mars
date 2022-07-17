@@ -4,26 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Mission to Mars</title> <!--Website title-->
+    <title>Mission to Mars</title>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    /> <!--CDN for Bootstrap style-->
+    />
   </head>
   <body>
-     <!--SET UP CONTAINER-->
     <div class="container">
-      <!-- ADD JUMBOTRON-->
+      <!-- Add Jumbotron to Header -->
       <div class="jumbotron text-center">
-        <!--ADD MAIN TEXT-->
         <h1>Mission to Mars</h1>
-        <!-- Add a button to activate scraping -->
+        <!-- Add a button to activate scraping script -->
         <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
       </div>
 
-      <!-- MARS NEWS SECTION-->
-      <div class="row" id="mars-news"><!--row tells Bootstrap we are using a grid system, horizontally aligned-->
-        <div class="col-md-12"><!--add a tag that species #of columns, 12-->
+      <!-- Add section for Mars News -->
+      <div class="row" id="mars-news">
+        <div class="col-md-12">
           <div class="media">
             <div class="media-body">
               <h2>Latest Mars News</h2>
@@ -34,17 +32,14 @@
         </div>
       </div>
 
-      <!-- FEATURED IMAGE AND FACTS SECTION -->
-      <!-- FIRST LEVEL -->
+      <!-- Section for Featured Image and Facts table -->
       <div class="row" id="mars-featured-image">
-      
-        <!-- SECOND LEVEL -->
         <div class="col-md-8">
-          <h2>Featured Mars Image </h2>
-          
-          <!-- PULLS IMAGE-->
+          <h2>Featured Mars Image</h2>
+
+          <!-- if images is False/None/non-existent, then default to error message -->
           <img
-            src="{{mars.featured_image}}"
+            src="{{mars.featured_image | default('static/images/error.png', true) }}"
             class="img-responsive"
             alt="Responsive image"
           />
@@ -54,20 +49,18 @@
           <!-- Mars Facts -->
           <div class="row" id="mars-facts">
             <h4>Mars Facts</h4>
-
             {{ mars.facts | safe }}
-
           </div>
         </div>
       </div>
 
-      <!-- MARS HEMISPHERE SECTION -->
+      <!-- Section for Mars Hemispheres -->
       <div class="row" id="mars-hemispheres">
         <div class="page-header">
           <h2 class="text-center">Mars Hemispheres</h2>
         </div>
-        
-        {% for hemisphere in mars.hemisphere_data %}
+
+        {% for hemisphere in mars.hemispheres %}
         <div class="col-md-6">
           <div class="thumbnail">
             <img src="{{hemisphere.img_url | default('static/images/error.png', true)}}" alt="...">
