@@ -121,7 +121,7 @@ def hemisphere_scrape(browser) :
         img_soup = soup(html, 'html.parser')
         # Retrieve the full size image
         img_url_rel = img_soup.find('img', class_="wide-image").get('src')
-        img_url = f'https://marshemispheres.com/{hemi_img_url_rel}'
+        img_url = f'https://marshemispheres.com/{img_url_rel}'
         #Retrieve title
         title = img_soup.find("h2", class_="title").get_text()
         # Define and append to the dictionary
